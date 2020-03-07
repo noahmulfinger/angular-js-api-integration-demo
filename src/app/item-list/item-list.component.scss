@@ -1,0 +1,32 @@
+.sign-in {
+  vertical-align: center;
+  position: relative;
+}
+
+.sign-in-button {
+  position: absolute;
+  left: 50%;
+  margin-top: 5rem;
+  transform: translate(-50%);
+}
+
+.header {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.list-item {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 150px;
+}
+
+.list-title {
+  vertical-align: center;
+  padding-top: 10px;
+}
+
+.spinner {
+  width: 100%;
+  text-align: center;
+}
