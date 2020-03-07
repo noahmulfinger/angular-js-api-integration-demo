@@ -12,6 +12,7 @@ import { filter } from "rxjs/operators";
 export class MapPanelComponent implements OnInit {
   private map: any;
   private mapView: any;
+  private signedIn: boolean;
 
   constructor(
     private sessionService: SessionService,
@@ -35,9 +36,18 @@ export class MapPanelComponent implements OnInit {
       });
     });
 
-    this.sessionService.session$.pipe(filter(Boolean)).subscribe(session => {
+    this.sessionService.session$.subscribe(session => {
       loadModules(["esri/identity/IdentityManager"]).then(([esriId]) => {
-        esriId.registerToken(session.toCredential());
+        if (!session && this.signedIn) {
+          esriId.destroyCredentials();
+          this.map.removeAll();
+          this.signedIn = false;
+        }
+
+        if (session) {
+          esriId.registerToken(session.toCredential());
+          this.signedIn = true;
+        }
       });
     });
 

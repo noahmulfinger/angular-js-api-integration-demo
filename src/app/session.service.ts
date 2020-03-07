@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { UserSession } from "@esri/arcgis-rest-auth";
 
 const SESSION_KEY = "ARCGIS_REST_USER_SESSION";
-const CLIENT_ID = "Dbtn71QaBs736dRr"
+const CLIENT_ID = "Dbtn71QaBs736dRr";
 
 @Injectable({
   providedIn: "root"
@@ -26,7 +26,11 @@ export class SessionService {
       clientId: CLIENT_ID,
       redirectUri: `${window.location.origin}/authenticate`
     }).then(session => {
-      localStorage.setItem(SESSION_KEY, session.serialize());
+      try {
+        localStorage.setItem(SESSION_KEY, session.serialize());
+      } catch (e) {
+        console.warn("Unable to save session in localStorage");
+      }
       this.session = session;
     });
   }

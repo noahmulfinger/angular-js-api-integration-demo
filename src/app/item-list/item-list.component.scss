@@ -10,6 +10,17 @@
   transform: translate(-50%);
 }
 
+.sign-out-wrapper {
+  position: relative
+}
+
+.sign-out-button {
+  position: absolute;
+  left: 100%;
+  transform: translate(-110%);
+  margin-top: 1rem;
+}
+
 .header {
   text-align: center;
   margin-top: 2rem;

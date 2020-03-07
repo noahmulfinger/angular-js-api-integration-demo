@@ -19,6 +19,7 @@ export class ItemListComponent implements OnInit {
 
   ngOnInit(): void {
     this.sessionService.session$.subscribe(session => {
+      console.log("session")
       this.session = session;
       if (session) {
         const q = new SearchQueryBuilder()
@@ -34,13 +35,16 @@ export class ItemListComponent implements OnInit {
     });
 
     this.itemService.item$.pipe(filter(Boolean)).subscribe(item => {
-      console.log("sets item", item)
       this.currentItemId = item.id;
     })
   }
 
   signIn() {
     this.sessionService.signIn();
+  }
+
+  signOut() {
+    this.sessionService.signOut();
   }
 
   addItemToMap(item: IItem) {

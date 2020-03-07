@@ -12,6 +12,7 @@ export class AuthenticateComponent implements OnInit {
   constructor(private sessionService: SessionService) { }
 
   ngOnInit(): void {
+    console.log("complete sign in")
     this.sessionService.completeSignIn();
   }
 

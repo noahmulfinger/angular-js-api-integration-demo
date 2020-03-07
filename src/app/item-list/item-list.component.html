@@ -1,6 +1,6 @@
 <ng-container *ngIf="!session">
-  <div class="sign-in">
-    <button
+	<div class="sign-in">
+		<button
       class="sign-in-button"
       mat-raised-button
       color="primary"
@@ -8,19 +8,22 @@
     >
       Sign In
     </button>
-  </div>
+	</div>
 </ng-container>
 
 <ng-container *ngIf="session">
-  <h1 class="header">Your Feature Services</h1>
-  <mat-list>
-    <mat-list-item *ngFor="let item of items" class="list-item">
-      <div class="list-item">
-        <span class="list-title">{{ item.title }}</span>
-        <button mat-raised-button color="primary" (click)="addItemToMap(item)" [attr.disabled]="currentItemId === item.id">
+  <div class="sign-out-wrapper">
+    <button class="sign-out-button" mat-raised-button color="accent" (click)="signOut()">Sign Out</button>
+  </div>
+	<h1 class="header">Your Feature Services</h1>
+	<mat-list>
+		<mat-list-item *ngFor="let item of items" class="list-item">
+			<div class="list-item">
+				<span class="list-title">{{ item.title }}</span>
+				<button mat-raised-button color="primary" (click)="addItemToMap(item)" [disabled]="currentItemId === item.id">
           {{currentItemId === item.id ? "Item added!" : "Add to map"}}
         </button>
-      </div>
-    </mat-list-item>
-  </mat-list>
+			</div>
+		</mat-list-item>
+	</mat-list>
 </ng-container>
