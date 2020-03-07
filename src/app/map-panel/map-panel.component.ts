@@ -3,6 +3,8 @@ import { loadModules } from "esri-loader";
 import { ItemService } from "../item.service";
 import { SessionService } from "../session.service";
 import { filter } from "rxjs/operators";
+import { IItem } from "@esri/arcgis-rest-portal";
+import { UserSession } from "@esri/arcgis-rest-auth";
 
 @Component({
   selector: "app-map-panel",
@@ -20,6 +22,18 @@ export class MapPanelComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.setupMap();
+
+    this.sessionService.session$.subscribe(session =>
+      this.handleSession(session)
+    );
+
+    this.itemService.item$
+      .pipe(filter(Boolean))
+      .subscribe(item => this.addFeatureLayer(item));
+  }
+
+  private setupMap() {
     loadModules(
       ["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer"],
       { css: true }
@@ -35,35 +49,35 @@ export class MapPanelComponent implements OnInit {
         zoom: 3
       });
     });
+  }
 
-    this.sessionService.session$.subscribe(session => {
-      loadModules(["esri/identity/IdentityManager"]).then(([esriId]) => {
-        if (!session && this.signedIn) {
-          esriId.destroyCredentials();
-          this.map.removeAll();
-          this.signedIn = false;
-        }
+  private handleSession(session: UserSession) {
+    loadModules(["esri/identity/IdentityManager"]).then(([esriId]) => {
+      if (!session && this.signedIn) {
+        esriId.destroyCredentials();
+        this.map.removeAll();
+        this.signedIn = false;
+      }
 
-        if (session) {
-          esriId.registerToken(session.toCredential());
-          this.signedIn = true;
+      if (session) {
+        esriId.registerToken(session.toCredential());
+        this.signedIn = true;
+      }
+    });
+  }
+
+  private addFeatureLayer(item: IItem) {
+    loadModules(["esri/layers/FeatureLayer"]).then(([FeatureLayer]) => {
+      const layer = new FeatureLayer({
+        portalItem: {
+          id: item.id,
+          layerId: 0
         }
       });
-    });
-
-    this.itemService.item$.pipe(filter(Boolean)).subscribe(item => {
-      loadModules(["esri/layers/FeatureLayer"]).then(([FeatureLayer]) => {
-        const layer = new FeatureLayer({
-          portalItem: {
-            id: item.id,
-            layerId: 0
-          }
-        });
-        this.map.removeAll();
-        this.map.add(layer);
-        this.mapView.whenLayerView(layer).then(() => {
-          this.mapView.goTo(item.extent);
-        });
+      this.map.removeAll();
+      this.map.add(layer);
+      this.mapView.whenLayerView(layer).then(() => {
+        this.mapView.goTo(item.extent);
       });
     });
   }
