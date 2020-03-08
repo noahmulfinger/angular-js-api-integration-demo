@@ -14,8 +14,7 @@ import { UserSession } from "@esri/arcgis-rest-auth";
 export class MapPanelComponent implements OnInit {
   private map: any;
   private mapView: any;
-  private signedIn: boolean;
-  private esri: any = {};
+  private session: UserSession;
 
   constructor(
     private sessionService: SessionService,
@@ -53,15 +52,15 @@ export class MapPanelComponent implements OnInit {
 
   private handleSession(session: UserSession) {
     loadModules(["esri/identity/IdentityManager"]).then(([esriId]) => {
-      if (!session && this.signedIn) {
+      if (!session && this.session) {
         esriId.destroyCredentials();
         this.map.removeAll();
-        this.signedIn = false;
+        this.session = null;
       }
 
       if (session) {
         esriId.registerToken(session.toCredential());
-        this.signedIn = true;
+        this.session = session;
       }
     });
   }
