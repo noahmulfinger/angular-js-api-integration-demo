@@ -68,7 +68,6 @@ export class MapPanelComponent implements OnInit {
 
   private addFeatureLayer(item: IItem) {
     loadModules(["esri/layers/FeatureLayer"]).then(([FeatureLayer]) => {
-      console.log("loads feature layer");
       const layer = new FeatureLayer({
         portalItem: {
           id: item.id,
