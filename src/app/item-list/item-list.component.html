@@ -20,8 +20,8 @@
 		<mat-list-item *ngFor="let item of items" class="list-item">
 			<div class="list-item">
 				<span class="list-title">{{ item.title }}</span>
-				<button mat-raised-button color="primary" (click)="addItemToMap(item)" [disabled]="currentItemId === item.id">
-          {{currentItemId === item.id ? "Item added!" : "Add to map"}}
+				<button mat-raised-button color="primary" (click)="addItemToMap(item)" [disabled]="(currentItemId$ | async) === item.id">
+          {{(currentItemId$ | async) === item.id ? "Item added!" : "Add to map"}}
         </button>
 			</div>
 		</mat-list-item>

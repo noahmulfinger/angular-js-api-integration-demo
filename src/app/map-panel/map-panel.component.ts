@@ -15,6 +15,7 @@ export class MapPanelComponent implements OnInit {
   private map: any;
   private mapView: any;
   private signedIn: boolean;
+  private esri: any = {};
 
   constructor(
     private sessionService: SessionService,
@@ -34,21 +35,20 @@ export class MapPanelComponent implements OnInit {
   }
 
   private setupMap() {
-    loadModules(
-      ["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer"],
-      { css: true }
-    ).then(([Map, MapView, FeatureLayer]) => {
-      this.map = new Map({
-        basemap: "dark-gray"
-      });
+    loadModules(["esri/Map", "esri/views/MapView"], { css: true }).then(
+      ([Map, MapView]) => {
+        this.map = new Map({
+          basemap: "dark-gray"
+        });
 
-      this.mapView = new MapView({
-        container: "mapView",
-        map: this.map,
-        center: [-97.380979, 42.877742],
-        zoom: 3
-      });
-    });
+        this.mapView = new MapView({
+          container: "mapView",
+          map: this.map,
+          center: [-97.380979, 42.877742],
+          zoom: 3
+        });
+      }
+    );
   }
 
   private handleSession(session: UserSession) {
@@ -68,6 +68,7 @@ export class MapPanelComponent implements OnInit {
 
   private addFeatureLayer(item: IItem) {
     loadModules(["esri/layers/FeatureLayer"]).then(([FeatureLayer]) => {
+      console.log("loads feature layer");
       const layer = new FeatureLayer({
         portalItem: {
           id: item.id,

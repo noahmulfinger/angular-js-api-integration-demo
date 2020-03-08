@@ -7,7 +7,7 @@ import {
 } from "@esri/arcgis-rest-portal";
 import { SessionService } from "../session.service";
 import { ItemService } from "../item.service";
-import { filter } from "rxjs/operators";
+import { filter, map } from "rxjs/operators";
 
 @Component({
   selector: "app-item-list",
@@ -17,7 +17,7 @@ import { filter } from "rxjs/operators";
 export class ItemListComponent implements OnInit {
   session: UserSession;
   items: IItem[];
-  currentItemId: IItem;
+  currentItemId$: IItem;
 
   constructor(
     private sessionService: SessionService,
@@ -40,9 +40,10 @@ export class ItemListComponent implements OnInit {
       }
     });
 
-    this.itemService.item$.pipe(filter(Boolean)).subscribe(item => {
-      this.currentItemId = item.id;
-    });
+    this.currentItemId$ = this.itemService.item$.pipe(
+      filter(Boolean),
+      map((item: IItem) => item.id)
+    );
   }
 
   signIn() {

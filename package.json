@@ -16,6 +16,7 @@
     "@esri/arcgis-rest-auth": "^2.9.0",
     "@esri/arcgis-rest-portal": "^2.9.0",
     "@esri/arcgis-rest-request": "^2.9.0",
+    "@types/arcgis-js-api": "^4.14.0",
     "core-js": "2.6.9",
     "esri-loader": "^2.13.0",
     "rxjs": "6.5.2",
