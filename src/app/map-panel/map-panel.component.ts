@@ -6,7 +6,7 @@ import { filter } from "rxjs/operators";
 import { IItem } from "@esri/arcgis-rest-portal";
 import { UserSession } from "@esri/arcgis-rest-auth";
 
-@Component({
+@Component({ 
   selector: "app-map-panel",
   templateUrl: "./map-panel.component.html",
   styleUrls: ["./map-panel.component.scss"]
