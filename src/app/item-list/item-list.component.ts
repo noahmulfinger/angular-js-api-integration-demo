@@ -1,8 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { UserSession } from "@esri/arcgis-rest-auth";
-import { searchItems, SearchQueryBuilder, IItem } from "@esri/arcgis-rest-portal";
+import {
+  searchItems,
+  SearchQueryBuilder,
+  IItem
+} from "@esri/arcgis-rest-portal";
 import { SessionService } from "../session.service";
-import { ItemService } from '../item.service';
+import { ItemService } from "../item.service";
 import { filter } from "rxjs/operators";
 
 @Component({
@@ -15,19 +19,21 @@ export class ItemListComponent implements OnInit {
   items: IItem[];
   currentItemId: IItem;
 
-  constructor(private sessionService: SessionService, private itemService :ItemService) {}
+  constructor(
+    private sessionService: SessionService,
+    private itemService: ItemService
+  ) {}
 
   ngOnInit(): void {
     this.sessionService.session$.subscribe(session => {
-      console.log("session")
       this.session = session;
       if (session) {
         const q = new SearchQueryBuilder()
-          .match("Feature Service")
-          .in("type")
-          .and()
           .match(session.username)
-          .in("owner");
+          .in("owner")
+          .and()
+          .match("Feature Service")
+          .in("type");
         searchItems({ q, authentication: session }).then(response => {
           this.items = response.results;
         });
@@ -36,7 +42,7 @@ export class ItemListComponent implements OnInit {
 
     this.itemService.item$.pipe(filter(Boolean)).subscribe(item => {
       this.currentItemId = item.id;
-    })
+    });
   }
 
   signIn() {
