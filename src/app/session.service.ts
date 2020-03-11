@@ -24,26 +24,19 @@ export class SessionService {
   signIn() {
     UserSession.beginOAuth2({
       clientId: CLIENT_ID,
-      redirectUri: `${window.location.origin}/authenticate`
-    }).then(session => {
-      try {
-        localStorage.setItem(SESSION_KEY, session.serialize());
-      } catch (e) {
-        console.warn("Unable to save session in localStorage");
-      }
-      this.session = session;
+      redirectUri: `${window.location.origin}/authenticate`,
+      popup: false
     });
   }
 
   completeSignIn() {
-    try {
-      UserSession.completeOAuth2({
-        clientId: CLIENT_ID,
-        redirectUri: `${window.location.origin}/authenticate`
-      });
-    } catch (e) {
-      console.error(e);
-    }
+    let session = UserSession.completeOAuth2({
+      clientId: CLIENT_ID,
+      redirectUri: `${window.location.origin}/authenticate`,
+      popup: false
+    });
+    localStorage.setItem(SESSION_KEY, session.serialize());
+    this.session = session;
   }
 
   checkForSignIn() {
