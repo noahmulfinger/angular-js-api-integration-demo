@@ -6,7 +6,7 @@ import { filter } from "rxjs/operators";
 import { IItem } from "@esri/arcgis-rest-portal";
 import { UserSession } from "@esri/arcgis-rest-auth";
 
-@Component({ 
+@Component({
   selector: "app-map-panel",
   templateUrl: "./map-panel.component.html",
   styleUrls: ["./map-panel.component.scss"]
@@ -51,15 +51,15 @@ export class MapPanelComponent implements OnInit {
   }
 
   private handleSession(session: UserSession) {
-    loadModules(["esri/identity/IdentityManager"]).then(([esriId]) => {
+    loadModules(["esri/identity/IdentityManager"]).then(([IdentityManager]) => {
       if (!session && this.session) {
-        esriId.destroyCredentials();
+        IdentityManager.destroyCredentials();
         this.map.removeAll();
         this.session = null;
       }
 
       if (session) {
-        esriId.registerToken(session.toCredential());
+        IdentityManager.registerToken(session.toCredential());
         this.session = session;
       }
     });
